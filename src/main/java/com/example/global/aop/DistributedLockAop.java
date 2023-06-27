@@ -1,8 +1,8 @@
 package com.example.global.aop;
 
-import com.example.global.util.CustomSpringELParser;
 import com.example.global.common.DistributedLock;
 import com.example.global.transaction.AopForTransaction;
+import com.example.global.util.CustomSpringELParser;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.aspectj.lang.ProceedingJoinPoint;
@@ -14,6 +14,8 @@ import org.redisson.api.RedissonClient;
 import org.springframework.stereotype.Component;
 
 import java.lang.reflect.Method;
+
+import static net.logstash.logback.argument.StructuredArguments.kv;
 
 /**
  * @DistributedLock
@@ -50,7 +52,14 @@ public class DistributedLockAop {
         } catch (InterruptedException e) {
             throw new InterruptedException();
         } finally {
-            rLock.unlock();   // (4)
+            try {
+                rLock.unlock();
+            } catch (IllegalMonitorStateException e) {
+                log.info("Redisson Lock Already UnLock {} {}",
+                        kv("serviceName", method.getName()),
+                        kv("key", key)
+                );
+            }
         }
     }
 }

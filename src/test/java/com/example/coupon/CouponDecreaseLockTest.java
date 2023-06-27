@@ -58,6 +58,7 @@ public class CouponDecreaseLockTest {
                 try {
                     // distributedLock method call (lock key : coupon name)
                     couponDecreaseService.couponDecrease(coupon.getName(), coupon.getId());
+                    System.out.println("차감 쿠폰 = " + coupon.getName());
                 } finally {
                     latch.countDown();
                 }
@@ -70,7 +71,7 @@ public class CouponDecreaseLockTest {
                 .orElseThrow(IllegalArgumentException::new);
 
         assertThat(persistCoupon.getAvailableStock()).isZero();
-        System.out.println("잔여 쿠폰 개수 = " + persistCoupon.getAvailableStock());
+        System.out.println("잔여 쿠폰 갯수 = " + persistCoupon.getAvailableStock());
     }
 
     @Test
@@ -83,6 +84,7 @@ public class CouponDecreaseLockTest {
             executorService.submit(() -> {
                 try {
                     couponDecreaseService.couponDecrease(coupon.getId());
+                    System.out.println("차감 쿠폰 = " + coupon.getName());
                 } finally {
                     latch.countDown();
                 }

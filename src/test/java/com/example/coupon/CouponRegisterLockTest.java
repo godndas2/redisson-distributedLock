@@ -24,11 +24,16 @@ class CouponRegisterLockTest {
     private CouponRepository couponRepository;
 
     /**
-     * 1. "NEW_001" 이라는 name을 가진 쿠폰을 준비한다
-     * 2. 사용자 100명이 동시에 "NEW_001" 쿠폰을 등록 요청한다
-     * 3. 정상적으로 등록된 "NEW_001" 쿠폰 갯수는 단 하나이어야 한다
+     * Feature: 쿠폰 등록 동시성 테스트
+     * Background
+     *     Given HIGH_COUPON_NEW_001 라는 이름의 쿠폰을 준비한다.
+     * <p>
+     * Scenario: 100명의 사용자가 동시에 접근해 쿠폰(HIGH_COUPON_NEW_001) 등록 요청
+     *           Lock의 이름은 HIGH_COUPON_NEW_001 으로 한다.
+     * <p>
+     * Then 정상적으로 등록된 "NEW_001" 쿠폰 갯수는 단 하나이어야 한다
      */
-    @DisplayName("반대로 테스트 하려면 register() @DistributedLock 주석")
+    @DisplayName("반대로 테스트 하려면 CouponRegisterService.register() @DistributedLock 주석")
     @Test
     void 쿠폰등록_중복체크() throws InterruptedException {
         CouponRequest couponRequest = new CouponRequest("NEW_001", 10L);
