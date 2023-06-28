@@ -21,7 +21,7 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 
 
 @SpringBootTest
-class StockRegisterLockTest {
+class StockDecreaseLockTest {
 
     @Autowired
     StockService stockService;
@@ -54,7 +54,6 @@ class StockRegisterLockTest {
         } catch (ExecutionException e) {
             result = (Exception) e.getCause();
         }
-
         assertTrue(result instanceof OptimisticLockingFailureException);
     }
 

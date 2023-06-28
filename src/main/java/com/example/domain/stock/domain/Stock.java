@@ -20,6 +20,7 @@ public class Stock {
 
     private Long availableStock;
 
+    /** Optimistic Lock **/
     @Version
     private Long version;
 
@@ -39,7 +40,7 @@ public class Stock {
 
     private void validateStockCount(Long pickingCount) {
         if (pickingCount > availableStock) {
-            throw new IllegalArgumentException();
+            throw new IllegalArgumentException("재고가 없습니다.");
         }
     }
 }
